@@ -3,6 +3,10 @@
   "version": "0.0.0",
   "description": "Mille bornes card game implementation",
   "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/posva/mille-bornes.git"
+  },
   "scripts": {
     "test": "mocha",
     "dev": "mocha --debug -w"
