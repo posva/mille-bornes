@@ -6,6 +6,8 @@ class Player
     @discarded = null
     @opponent = null
     @hand = []
+    @coupFourres = []
+    @playedShield = false
     @field =
       shield: []
       km: []
@@ -23,6 +25,13 @@ class Player
     @field.speed.splice 0
 
   give: (card) -> @hand.push(card) if card?
+
+  defend: (card) ->
+    shieldIndex = _.findIndex @hand, name: card.name, type: 'shield'
+    return false if shieldIndex < 0
+    shield = @hand.splice(shieldIndex, 1)[0]
+    @field.shield.push shield
+    @coupFourres.push shield
 
   canPlay: (card) ->
     return false if not _.find @hand, card
@@ -82,10 +91,15 @@ class Player
       else field = card.type
     if field of @field
       if card.type is 'attack'
-        @opponent.field[field].push card
+        if not @opponent.defend card
+          @opponent.field[field].push card
+        else
+          @discarded = card
       else
         @field[field].push card
       @hand.splice index, 1
+      if card.type is 'shield'
+        @playedShield = true
       card
 
   discard: (card) ->

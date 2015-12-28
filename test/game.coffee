@@ -155,3 +155,26 @@ describe 'Game', ->
       game.isMatchOver().should.be.false()
       game.deck.empty()
       game.isMatchOver().should.be.true()
+
+    it 'gets an extra turn when playing a shield', ->
+      game.start()
+      game.nextTurn()
+      p1.hand.push cards.lightShield
+      p1.play cards.lightShield
+      game.nextTurn()
+      game.current.should.eql 0
+
+    it 'draws an extra card on coup fourré', ->
+      game.start()
+      game.nextTurn()
+      p2.hand.should.have.length 6
+      p1.hand.should.have.length 7
+
+      p1.hand.push cards.wheelAttack
+      p2.hand.push cards.wheelShield
+
+      p1.play cards.wheelAttack
+      p2.hand.should.have.length 6
+      game.nextTurn()
+      p2.hand.should.have.length 7
+

@@ -288,6 +288,24 @@ describe 'player', ->
         p1.canPlay cards.accidentShield
         p1.canPlay cards.fuelShield
 
+      it 'does not count shield as coup fourrés', ->
+        p1.coupFourres.should.be.empty()
+        p1.play cards.lightShield
+        p1.coupFourres.should.be.empty()
+
+      it 'plays shield on coup fourré', ->
+        p2.field.shield.should.not.containEql cards.wheelShield
+        p2.hand.should.containEql cards.wheelShield
+        p1.play cards.wheelAttack
+        p2.field.shield.should.containEql cards.wheelShield
+        p2.hand.should.not.containEql cards.wheelShield
+
+      it 'saves the coup fourrés', ->
+        p2.coupFourres.should.be.empty()
+        p2.hand.should.containEql cards.wheelShield
+        p1.play cards.wheelAttack
+        p2.coupFourres.should.containEql cards.wheelShield
+
   describe 'Card playing', ->
     beforeEach ->
       p2 = new Player()
@@ -326,6 +344,8 @@ describe 'player', ->
       p1.field.km.should.containEql p1.play cards.km100
 
     it 'adds fuel, wheel, light and accidents cards to its field', ->
+      _.remove p1.hand, type: 'shield'
+      _.remove p2.hand, type: 'shield'
       p2.field.attack.should.containEql p1.play cards.lightAttack
       p2.field.attack.should.containEql p1.play cards.fuelAttack
       p2.field.attack.should.containEql p1.play cards.accidentAttack

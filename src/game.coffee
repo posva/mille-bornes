@@ -62,6 +62,8 @@ class Game
       d = @players[@current].discarded
       @discard.push(d) if d?
       @players[@current].discarded = null
+      if @players[@current].playedShield
+        --@current
     if ++@current >= @players.length
       @current = 0
     @players[@current].give @deck.draw()
