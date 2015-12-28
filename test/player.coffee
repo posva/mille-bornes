@@ -326,10 +326,10 @@ describe 'player', ->
       p1.field.km.should.containEql p1.play cards.km100
 
     it 'adds fuel, wheel, light and accidents cards to its field', ->
-      p1.field.attack.should.containEql p1.play cards.lightAttack
-      p1.field.attack.should.containEql p1.play cards.fuelAttack
-      p1.field.attack.should.containEql p1.play cards.accidentAttack
-      p1.field.attack.should.containEql p1.play cards.wheelAttack
+      p2.field.attack.should.containEql p1.play cards.lightAttack
+      p2.field.attack.should.containEql p1.play cards.fuelAttack
+      p2.field.attack.should.containEql p1.play cards.accidentAttack
+      p2.field.attack.should.containEql p1.play cards.wheelAttack
       p1.field.attack.should.containEql p1.play cards.lightDefense
       p1.field.attack.should.containEql p1.play cards.fuelDefense
       p1.field.attack.should.containEql p1.play cards.accidentDefense
@@ -337,7 +337,7 @@ describe 'player', ->
 
     it 'adds speed to its fields', ->
       p1.field.speed.should.containEql p1.play cards.speedDefense
-      p1.field.speed.should.containEql p1.play cards.speedAttack
+      p2.field.speed.should.containEql p1.play cards.speedAttack
 
     it 'adds shields to its fields', ->
       p1.field.shield.should.containEql p1.play cards.lightShield

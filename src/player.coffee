@@ -81,7 +81,10 @@ class Player
           field = 'attack'
       else field = card.type
     if field of @field
-      @field[field].push card
+      if card.type is 'attack'
+        @opponent.field[field].push card
+      else
+        @field[field].push card
       @hand.splice index, 1
       card
 
