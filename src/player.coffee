@@ -22,7 +22,7 @@ class Player
     @field.attack.splice 0
     @field.speed.splice 0
 
-  give: (card) -> @hand.push card
+  give: (card) -> @hand.push(card) if card?
 
   canPlay: (card) ->
     return false if not _.find @hand, card

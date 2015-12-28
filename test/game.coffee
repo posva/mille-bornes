@@ -110,6 +110,7 @@ describe 'Game', ->
 
     it 'discards player cards', ->
       game.start()
+      game.nextTurn()
       game.discard.should.be.empty()
       p1.discard p1.hand[0]
       game.nextTurn()
@@ -118,14 +119,39 @@ describe 'Game', ->
 
     it 'changes current player', ->
       game.start()
+      game.nextTurn()
       game.current.should.be.eql 0
       game.nextTurn()
       game.current.should.be.eql 1
 
-    it 'gets a winner when 1000km', ->
-      game.kms = 1000
+    it 'draws a card for the player', ->
       game.start()
-      should.not.exist game.matchWinner()
+      game.nextTurn()
+      game.players[1].hand.should.have.length 6
+      game.nextTurn()
+      game.players[1].hand.should.have.length 7
+
+    it 'cycles the current player', ->
+      game.start()
+      game.nextTurn()
+      game.current.should.eql 0
+      game.nextTurn()
+      game.current.should.eql 1
+      game.nextTurn()
+      game.current.should.eql 0
+
+    it 'gets a winner when 1000km', ->
+      game.start()
+      game.isMatchOver().should.be.false()
       for i in [1..10]
         game.players[0].field.km.push cards.km100
-      should.exist game.matchWinner()
+      game.isMatchOver().should.be.true()
+
+    it 'end when there are no more cards', ->
+      game.start()
+      game.isMatchOver().should.be.false()
+      p1.hand.splice 0
+      p2.hand.splice 0
+      game.isMatchOver().should.be.false()
+      game.deck.empty()
+      game.isMatchOver().should.be.true()

@@ -8,7 +8,7 @@ class Game
     @deck = new Deck()
     @players = []
     @discard = []
-    @current = 0
+    @current = -1
     @kms = 1000
 
     @players.push new Player()
@@ -19,6 +19,7 @@ class Game
   reset: ->
     @deck.empty()
     _.forEach @players, (player) -> player.reset()
+    @current = -1
     @init()
 
   start: ->
@@ -57,12 +58,18 @@ class Game
     @deck.add 10, cards.km25
 
   nextTurn: ->
-    d = @players[@current].discarded
-    @discard.push(d) if d?
-    @players[@current].discarded = null
-    ++@current
+    if @current isnt -1
+      d = @players[@current].discarded
+      @discard.push(d) if d?
+      @players[@current].discarded = null
+    if ++@current >= @players.length
+      @current = 0
+    @players[@current].give @deck.draw()
 
-  matchWinner: ->
-    _.find @players, (player) => player.kms() is @kms
+  isMatchOver: ->
+    if @deck.array.length or _.some(@players, (player) -> player.hand.length)
+      _.some @players, (player) => player.kms() is @kms
+    else
+      true
 
 module.exports = Game

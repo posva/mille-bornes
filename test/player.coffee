@@ -347,3 +347,8 @@ describe 'player', ->
       p1.hand.should.not.containEql p1.discard cards.lightAttack
       p1.discarded.should.be.eql cards.lightAttack
 
+    it 'discarding decreases hand size', ->
+      p1.hand.should.have.length 19
+      p1.discard cards.lightAttack
+      p1.hand.should.have.length 18
+
