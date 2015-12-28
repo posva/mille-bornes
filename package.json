@@ -9,7 +9,8 @@
   },
   "scripts": {
     "test": "mocha",
-    "dev": "mocha --debug -w"
+    "dev": "mocha --debug -w",
+    "cover": "mocha --recursive --require coffee-coverage/register-istanbul --bail && istanbul report"
   },
   "author": "posva",
   "license": "ISC",
@@ -17,7 +18,9 @@
     "lodash": "^3.10.1"
   },
   "devDependencies": {
+    "coffee-coverage": "^0.7.0",
     "coffee-script": "^1.10.0",
+    "istanbul": "^0.4.1",
     "mocha": "^2.3.4",
     "should": "^8.0.2",
     "sinon": "^1.17.2"

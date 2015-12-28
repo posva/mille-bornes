@@ -8,6 +8,7 @@ class Player
     @hand = []
     @coupFourres = []
     @playedShield = false
+    @playedCoupFourre = false
     @field =
       shield: []
       km: []
@@ -23,6 +24,10 @@ class Player
     @field.km.splice 0
     @field.attack.splice 0
     @field.speed.splice 0
+    @playedShield = false
+    @coupFourres.splice 0
+    @playedCoupFourre = false
+    undefined
 
   give: (card) -> @hand.push(card) if card?
 
@@ -32,6 +37,7 @@ class Player
     shield = @hand.splice(shieldIndex, 1)[0]
     @field.shield.push shield
     @coupFourres.push shield
+    @playedCoupFourre = true
 
   canPlay: (card) ->
     return false if not _.find @hand, card

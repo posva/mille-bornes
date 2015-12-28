@@ -63,9 +63,15 @@ class Game
       @discard.push(d) if d?
       @players[@current].discarded = null
       if @players[@current].playedShield
+        @players[@current].playedShield = false
         --@current
     if ++@current >= @players.length
       @current = 0
+
+    if @players[@current].playedCoupFourre
+      @players[@current].give @deck.draw()
+      @players[@current].playedCoupFourre = false
+
     @players[@current].give @deck.draw()
 
   isMatchOver: ->

@@ -20,8 +20,9 @@ describe 'Ed AI', ->
   it 'can end a game', ->
     game.start()
     until game.isMatchOver()
+      last = game.current
       game.nextTurn()
-      if game.current is 0
+      if last isnt game.current and game.current is 0
         console.log '---'
       game.players[game.current].play()
     console.log "Kms: #{game.players[0].kms()} - #{game.players[1].kms()}"

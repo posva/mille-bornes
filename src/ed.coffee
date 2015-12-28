@@ -65,14 +65,9 @@ class Ed extends Player
     if best.card?
       card = best.card
       console.log "Playing #{card.name} #{card.type}"
-      if not @canPlay card
-        console.log 'I cannot...'
       super card
     else
-      if worst.card?
-        card = worst.card
-      else
-        card = @hand[0]
+      card = worst.card
       console.log "Discarded #{card.name} #{card.type}"
       @discard card
 
