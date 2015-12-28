@@ -26,7 +26,7 @@ class Ed extends Player
     # add score
     _.forEach @hand, (card, i) =>
       # not worth wasting time on it
-      return if not @weight[i] or not @canPlay card
+      return if not @weight[i]
       switch card.type
         when 'defense'
           if @kms() < @opponent.kms()
@@ -42,6 +42,7 @@ class Ed extends Player
           @weight[i] = kmToPoints card.name
         else
           @weight[i] = 20
+      @weight[i] += 100 if @canPlay card
       return
 
   play: ->
@@ -49,10 +50,17 @@ class Ed extends Player
     best =
       card: null
       weight: 0
+    worst =
+      card: null
+      weight: 100
     _.forEach @weight, (weight, i) =>
-      if weight > 1 and weight > best.weight
-        best.card = @hand[i]
-        best.weight = weight
+      if weight > 100
+        if weight > best.weight
+          best.card = @hand[i]
+          best.weight = weight
+      else if weight < worst.weight
+        worst.card = @hand[i]
+        worst.weight = weight
 
     if best.card?
       card = best.card
@@ -61,7 +69,10 @@ class Ed extends Player
         console.log 'I cannot...'
       super card
     else
-      card = @hand[0]
+      if worst.card?
+        card = worst.card
+      else
+        card = @hand[0]
       console.log "Discarded #{card.name} #{card.type}"
       @discard card
 

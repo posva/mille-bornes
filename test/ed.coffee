@@ -17,7 +17,7 @@ describe 'Ed AI', ->
     game.players[game.current].play()
     game.players[game.current].hand.should.have.length 6
 
-  it.skip 'can end a game', ->
+  it 'can end a game', ->
     game.start()
     until game.isMatchOver()
       game.nextTurn()
