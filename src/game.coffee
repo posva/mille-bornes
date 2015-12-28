@@ -29,6 +29,22 @@ class Game
     @players[0].opponent = @players[1]
     @players[1].opponent = @players[0]
 
+  renderModel: (player) ->
+    p = @players[player]
+    o = @players[Number not player]
+    hand = _.map p.hand, (card) ->
+      card = _.clone card
+      card.playable = p.canPlay card
+      card
+    me:
+      hand: hand
+      field: p.field
+    other:
+      field: o.field
+      hand: o.hand.length
+    deck: @deck.array.length
+    discard: @discard
+
   init: ->
     # Attacks
     @deck.add 2, cards.fuelAttack

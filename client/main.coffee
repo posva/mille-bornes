@@ -1,3 +1,5 @@
 io = require 'socket.io-client'
-io()
-window.io = io
+socket = io()
+
+socket.on 'game view', (game) ->
+  console.log game
