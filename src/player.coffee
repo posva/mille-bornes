@@ -47,7 +47,8 @@ class Player
       when 'defense'
         if card.name is 'light'
           (not lastAttack? or
-            (lastAttack.type is 'attack' and lastAttack.name is 'light')
+            (lastAttack.type is 'attack' and lastAttack.name is 'light') or
+            (lastAttack.type is 'defense' and lastAttack.name isnt 'light')
           ) and not @hasShield 'light'
         else if card.name isnt 'speed'
           lastAttack? and

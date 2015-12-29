@@ -19,19 +19,7 @@ module.exports = {
       loader: 'vue'
     }]
   },
-  // vue-loader config:
-  // lint all JavaScript inside *.vue files with ESLint
-  // make sure to adjust your .eslintrc
   resolve: {
     extensions: ['', '.js', '.coffee']
-  },
-  vue: {
-    preLoaders: {
-      coffee: 'coffeelint'
-    }
-  },
-  coffeelint: {
-    emitErrors: true,
-    failOnErrors: true
   },
 }

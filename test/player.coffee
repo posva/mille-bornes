@@ -56,9 +56,6 @@ canAttack = (p1, p2, shield, attack) ->
 
 describe 'player', ->
   p1 = p2 = null
-  green =
-    name: 'light'
-    name: 'light'
 
   beforeEach ->
     p1 = new Player()
@@ -109,6 +106,15 @@ describe 'player', ->
 
     describe 'green light defense', ->
       it 'can play on empty stack', ->
+        p1.canPlay cards.lightDefense
+        .should.be.true()
+      it 'cannot play on defense with light shield', ->
+        p1.field.attack.push cards.wheelDefense
+        p1.field.shield.push cards.lightShield
+        p1.canPlay cards.lightDefense
+        .should.be.false()
+      it 'can play on defense', ->
+        p1.field.attack.push cards.wheelDefense
         p1.canPlay cards.lightDefense
         .should.be.true()
       it 'can play on red light', ->

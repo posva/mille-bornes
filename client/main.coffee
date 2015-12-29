@@ -1,5 +1,6 @@
-io = require 'socket.io-client'
-socket = io()
+Vue = require 'vue'
 
-socket.on 'game view', (game) ->
-  console.log game
+new Vue
+  el: 'body'
+  components:
+    app: require './app.vue'
