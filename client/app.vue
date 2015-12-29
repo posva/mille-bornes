@@ -8,26 +8,25 @@ p Deck has {{game.deck}}. Discard has {{game.discard.length}}
 p Your opponent has {{game.other.hand}} cards in hand
 p Opponent {{log[0]}}
 div
-  p Shields
-  ul
-    li(v-for='shield in game.other.shield') {{shield.name}}
-  p Attacks: {{opLastAttack | json}}
-  p Speed: {{opLastSpeed | json}}
+  .card-container
+    card(v-for='shield in game.other.field.shield', :card='shield')
+  .card-container
+    card(:card='opLastAttack')
+    card(:card='opLastSpeed')
   p Km: {{opKms}}
-  ul
-    li(v-for='card in game.other.field.km') {{card.name}}
+  .card-container
+    card(v-for='km in game.other.field.km', :card='km')
 div
-  p Shields
-  ul
-    li(v-for='shield in game.me.shield') {{shield.name}}
-  p Attacks: {{meLastAttack | json}}
-  p Speed: {{meLastSpeed | json}}
+  .card-container
+    card(v-for='shield in game.me.field.shield', :card='shield')
+  .card-container
+    card(:card='meLastAttack')
+    card(:card='meLastSpeed')
   p Km: {{meKms}}
-  ul
-    li(v-for='card in game.me.field.km') {{card.name}}
-  ul
-    li(v-for='card in game.me.hand')
-      span {{card | json}}
+  .card-container
+    card(v-for='km in game.me.field.km', :card='km')
+  .card-container
+    card(v-for='card in game.me.hand', :card='card')
       button(@click='play(card)', :disabled='!card.playable || over') Play
       button(@click='discard(card)', :disabled='over') Discard
 </template>
@@ -62,16 +61,27 @@ module.exports =
       total + card.name
     , 0
     meLastSpeed: ->
-      @game.me.field.speed[@game.me.field.speed.length - 1]
+      @game.me.field.speed[@game.me.field.speed.length - 1] or
+      name: 'Speed'
+      type: null
     meLastAttack: ->
-      @game.me.field.attack[@game.me.field.attack.length - 1]
-    opKms: -> _.reduce @game.other.field.km, (total, card) ->
-      total + card.name
-    , 0
+      @game.me.field.attack[@game.me.field.attack.length - 1] or
+      name: 'Attack / Defense'
+      type: null
+    opKms: ->
+      _.reduce(@game.other.field.km, (total, card) ->
+        total + card.name
+      , 0) or
+      name: 'Km'
+      type: null
     opLastSpeed: ->
-      @game.other.field.speed[@game.other.field.speed.length - 1]
+      @game.other.field.speed[@game.other.field.speed.length - 1] or
+      name: 'Speed'
+      type: null
     opLastAttack: ->
-      @game.other.field.attack[@game.other.field.attack.length - 1]
+      @game.other.field.attack[@game.other.field.attack.length - 1] or
+      name: 'Attack / Defense'
+      type: null
   methods:
     discard: (card) ->
       console.log 'Discarded', card
@@ -90,4 +100,6 @@ module.exports =
       @log.unshift "played #{card.name} #{card.type}"
     @socket.on 'match over', =>
       @over = true
+  components:
+    card: require './card.vue'
 </script>
