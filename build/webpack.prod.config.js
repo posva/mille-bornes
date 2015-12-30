@@ -1,6 +1,8 @@
 var webpack = require('webpack')
 var config = require('./webpack.base.config')
 
+config.output.filename = 'bundle.js'
+
 config.plugins = (config.plugins || []).concat([
   // this allows uglify to strip all warnings
   // from Vue.js source code.

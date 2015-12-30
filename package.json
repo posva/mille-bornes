@@ -9,6 +9,7 @@
     "url": "git+https://github.com/posva/mille-bornes.git"
   },
   "scripts": {
+    "start": "coffee app.coffee",
     "test": "mocha",
     "dev": "mocha --debug -w",
     "dev:client": "webpack -w --config build/webpack.dev.config.js",
@@ -18,18 +19,18 @@
   "author": "posva",
   "license": "ISC",
   "dependencies": {
+    "coffee-script": "^1.10.0",
     "express": "^4.13.3",
     "lodash": "^3.10.1",
+    "jade": "^1.11.0",
     "socket.io": "^1.3.7"
   },
   "devDependencies": {
     "coffee-coverage": "^0.7.0",
     "coffee-loader": "^0.7.2",
-    "coffee-script": "^1.10.0",
     "css-loader": "^0.23.1",
     "html-loader": "^0.4.0",
     "istanbul": "^0.4.1",
-    "jade": "^1.11.0",
     "mocha": "^2.3.4",
     "should": "^8.0.2",
     "sinon": "^1.17.2",
