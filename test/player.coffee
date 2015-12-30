@@ -3,7 +3,12 @@ cards = require '../src/cards'
 should = require 'should'
 _ = require 'lodash'
 
-canDefend = (p1, defense, shield, attack) ->
+canDefend = (defense, shield, attack) ->
+  p1 = null
+  beforeEach ->
+    p1 = new Player()
+    _.forOwn cards, (card) ->
+      p1.hand.push card
   it 'cannot play on empty stack', ->
     p1.canPlay defense
     .should.be.false()
@@ -24,7 +29,17 @@ canDefend = (p1, defense, shield, attack) ->
     p1.canPlay defense
     .should.be.false()
 
-canAttack = (p1, p2, shield, attack) ->
+canAttack = (shield, attack) ->
+  p1 = null
+  p2 = null
+  beforeEach ->
+    p1 = new Player()
+    p2 = new Player()
+    p1.opponent = p2
+    p2.opponent = p1
+    _.forOwn cards, (card) ->
+      p1.hand.push card
+      p2.hand.push card
   it 'cannot play on empty stack', ->
     p1.canPlay attack
     .should.be.false()
@@ -135,22 +150,13 @@ describe 'player', ->
         .should.be.false()
 
     describe 'fuel defense', ->
-      p = new Player()
-      _.forOwn cards, (card) ->
-        p.hand.push card
-      canDefend p, cards.fuelDefense, cards.fuelShield, cards.fuelAttack
+      canDefend cards.fuelDefense, cards.fuelShield, cards.fuelAttack
 
     describe 'wheel defense', ->
-      p = new Player()
-      _.forOwn cards, (card) ->
-        p.hand.push card
-      canDefend p, cards.wheelDefense, cards.wheelShield, cards.wheelAttack
+      canDefend cards.wheelDefense, cards.wheelShield, cards.wheelAttack
 
     describe 'accident defense', ->
-      p = new Player()
-      _.forOwn cards, (card) ->
-        p.hand.push card
-      canDefend p, cards.accidentDefense, cards.accidentShield, cards.accidentAttack
+      canDefend cards.accidentDefense, cards.accidentShield, cards.accidentAttack
 
     describe 'speed defense', ->
       it 'cannot play on empty stack', ->
@@ -166,6 +172,11 @@ describe 'player', ->
         .should.be.false()
       it 'cannot play if it has a shield', ->
         p1.field.shield.push cards.lightShield
+        p1.canPlay cards.speedDefense
+        .should.be.false()
+      it 'cannot play on attack if it has a shield', ->
+        p1.field.shield.push cards.lightShield
+        p1.field.speed.push cards.speedAttack
         p1.canPlay cards.speedDefense
         .should.be.false()
 
@@ -191,34 +202,13 @@ describe 'player', ->
         .should.be.false()
 
     describe 'fuel attack', ->
-      pp1 = new Player()
-      pp2 = new Player()
-      pp1.opponent = pp2
-      pp2.opponent = pp1
-      _.forOwn cards, (card) ->
-        pp1.hand.push card
-        pp2.hand.push card
-      canAttack pp1, pp2, cards.fuelShield, cards.fuelAttack
+      canAttack cards.fuelShield, cards.fuelAttack
 
     describe 'wheel attack', ->
-      pp1 = new Player()
-      pp2 = new Player()
-      pp1.opponent = pp2
-      pp2.opponent = pp1
-      _.forOwn cards, (card) ->
-        pp1.hand.push card
-        pp2.hand.push card
-      canAttack pp1, pp2, cards.wheelShield, cards.wheelAttack
+      canAttack cards.wheelShield, cards.wheelAttack
 
     describe 'accident attack', ->
-      pp1 = new Player()
-      pp2 = new Player()
-      pp1.opponent = pp2
-      pp2.opponent = pp1
-      _.forOwn cards, (card) ->
-        pp1.hand.push card
-        pp2.hand.push card
-      canAttack pp1, pp2, cards.accidentShield, cards.accidentAttack
+      canAttack cards.accidentShield, cards.accidentAttack
 
     describe 'Km', ->
       it 'cannot advance without green light', ->
@@ -311,6 +301,40 @@ describe 'player', ->
         p2.hand.should.containEql cards.wheelShield
         p1.play cards.wheelAttack
         p2.coupFourres.should.containEql cards.wheelShield
+
+      it 'can play after a shield is played', ->
+        p1.field.attack.push cards.wheelAttack
+        p1.field.attack.should.have.length 1
+        p1.play cards.wheelShield
+        p1.field.attack.should.have.length 1
+        p1.canPlay cards.lightDefense
+        .should.be.true()
+
+      it 'can play after light shield and another is played', ->
+        p1.field.attack.push cards.wheelAttack
+        p1.field.attack.should.have.length 1
+        p1.play cards.wheelShield
+        p1.play cards.lightShield
+        p1.field.attack.should.have.length 1
+        p1.canPlay cards.lightDefense
+        .should.be.false()
+        p1.canPlay cards.km100
+        .should.be.true()
+
+      it 'can attack when other has shield', ->
+        p2.field.shield.push cards.wheelShield
+        p2.field.attack.push cards.wheelAttack
+        p1.canPlay cards.accidentAttack
+        .should.be.false()
+        p2.field.shield.push cards.lightShield
+        p1.canPlay cards.accidentAttack
+        .should.be.true()
+
+      it 'can attack on red after light shield', ->
+        p2.field.shield.push cards.lightShield
+        p2.field.attack.push cards.lightAttack
+        p1.canPlay cards.accidentAttack
+        .should.be.true()
 
   describe 'Card playing', ->
     beforeEach ->
