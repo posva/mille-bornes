@@ -10,10 +10,12 @@ img.not-playable
 .card-container .card
   margin: 5px
   padding: 10px
-  min-width: 208px
-  min-height: 288px
+  width: 104px
+  min-height: 144px
   background-color: #d8d8d8
   border-radius: 8px
+  img
+    width: 100%
   span
     display: block
     font-weight: bolder
