@@ -32,7 +32,8 @@ class Player
   give: (card) -> @hand.push(card) if card?
 
   defend: (card) ->
-    shieldIndex = _.findIndex @hand, name: card.name, type: 'shield'
+    name = if card.name is 'speed' then 'light' else card.name
+    shieldIndex = _.findIndex @hand, name: name, type: 'shield'
     return false if shieldIndex < 0
     shield = @hand.splice(shieldIndex, 1)[0]
     @field.shield.push shield

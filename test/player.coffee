@@ -301,6 +301,13 @@ describe 'Player', ->
         p2.field.shield.should.containEql cards.wheelShield
         p2.hand.should.not.containEql cards.wheelShield
 
+      it 'plays light shield on speed attack', ->
+        p2.field.shield.should.not.containEql cards.lightShield
+        p2.hand.should.containEql cards.lightShield
+        p1.play cards.speedAttack
+        p2.field.shield.should.containEql cards.lightShield
+        p2.hand.should.not.containEql cards.lightShield
+
       it 'saves the coup fourrés', ->
         p2.coupFourres.should.be.empty()
         p2.hand.should.containEql cards.wheelShield
@@ -391,6 +398,8 @@ describe 'Player', ->
       p1.field.attack.should.containEql p1.play cards.wheelDefense
 
     it 'adds speed to its fields', ->
+      _.remove p1.hand, type: 'shield'
+      _.remove p2.hand, type: 'shield'
       p1.field.speed.should.containEql p1.play cards.speedDefense
       p2.field.speed.should.containEql p1.play cards.speedAttack
 
