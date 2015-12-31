@@ -1,6 +1,6 @@
 Vue = require 'vue'
 
-if process.env isnt 'production'
+if process.env.NODE_ENV isnt 'production'
   Vue.config.debug = true
 new Vue
   el: 'body'

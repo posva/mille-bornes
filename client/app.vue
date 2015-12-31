@@ -1,4 +1,15 @@
 <style lang="stylus">
+p
+  margin-bottom: initial
+.hand-transition
+  transition: all .3s ease
+
+.hand-enter
+  margin-right: 104px
+  opacity: 0
+.hand-leave
+  margin-top: -144px
+  opacity: 0
 </style>
 
 <template lang="jade">
@@ -12,14 +23,14 @@ div
     card.force.stack(v-for='shield in game.other.field.shield', :card='shield')
     card(:card='opLastAttack')
     card(:card='opLastSpeed')
-    card.force.tight.stack(v-for='km in game.other.field.km', :card='km')
+    card.force.tight.stack(v-for='km in game.other.field.km | orderBy "name"', :card='km')
   p Km: {{opKms}}
 div
   .card-container
     card.force.stack(v-for='shield in game.me.field.shield', :card='shield')
     card(:card='meLastAttack')
     card(:card='meLastSpeed')
-    card.force.stack.tight(v-for='km in game.me.field.km', :card='km')
+    card.force.stack.tight(v-for='km in game.me.field.km | orderBy "name"', :card='km')
   p Km: {{meKms}}
   .card-container
     card.stack.playable(v-ref:card, v-for='card in game.me.hand', :card='card', @click='play($index)')

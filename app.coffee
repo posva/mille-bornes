@@ -36,7 +36,11 @@ io.on 'connection', (socket) ->
         socket.emit 'discard card', card
       else
         socket.emit 'play card', card
-      game.nextTurn()
+      if not game.isMatchOver()
+        game.nextTurn()
+
+    if game.isMatchOver()
+      socket.emit 'match over'
     socket.emit 'game view', game.renderModel pIndex
 
   socket.emit 'game view', game.renderModel pIndex

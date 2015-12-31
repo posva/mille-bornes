@@ -1,5 +1,7 @@
 <style lang="stylus">
 phone-size = 768px
+transition = .3s ease
+
 marginRight()
   margin-right: -70px
   &.tight
@@ -36,7 +38,7 @@ marginRight()
     min-height: 144px
 
     &.stack
-      transition: all .3s ease
+      transition: margin-right transition, background-color transition
       border-radius: 3px
       @media screen and (max-width: phone-size)
         marginRight()
