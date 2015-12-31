@@ -11,7 +11,8 @@ module.exports = {
     loaders: [{
       test: /\.coffee$/,
       include: [
-        path.resolve(__dirname, '../client')
+        path.resolve(__dirname, '../client'),
+        path.resolve(__dirname, '../src')
       ],
       loader: 'coffee'
     }, {

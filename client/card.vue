@@ -1,32 +1,67 @@
 <style lang="stylus">
-img.not-playable
-  filter: grayscale(.9) opacity(.8)
-  max-width: 100%
-.card-container, .card
+phone-size = 768px
+marginRight()
+  margin-right: -70px
+  &.tight
+    margin-right: -100px
+  &:last-of-type
+    margin-right: initial
+  &:hover
+    margin-right: initial
+
+.card-container
   display: flex
-  align-items: center
-  justify-content: center
+  align-items: flex-start
+  justify-content: flex-start
   flex-wrap: wrap
-.card-container .card
-  margin: 5px
-  padding: 10px
-  width: 104px
-  min-height: 144px
   background-color: #d8d8d8
   border-radius: 8px
-  img
-    width: 100%
-  span
-    display: block
-    font-weight: bolder
+  margin: 5px 0px
+  overflow: hidden
+
+  .card
+    display: flex
+    align-items: center
+    justify-content: center
+    flex-wrap: wrap
+    z-index: 1
+    padding: 3px
+    img
+      width: 100%
+    &.muted
+      img
+        filter: grayscale(1)
+    margin: 1px 3px
+    width: 104px
+    min-height: 144px
+
+    &.stack
+      transition: all .3s ease
+      border-radius: 3px
+      @media screen and (max-width: phone-size)
+        marginRight()
+      &.force
+        marginRight()
+      &:hover
+        &.playable
+          cursor: pointer
+        &.muted
+          &.playable
+            background-color: tomato
+          img
+            filter: grayscale(.75)
+        &.playable:not(.muted)
+          background-color: seagreen
+
+    span
+      display: block
+      font-weight: bolder
 </style>
 
 <template lang="jade">
-.card
+.card(:class='{muted: !visible}')
   div(v-if='card.type')
-    img(:class='{"not-playable": !visible}', :src='url')
-    slot
-  span(v-else) {{card.name}}
+    img(:src='url')
 </template>
 
 <script lang="coffee">

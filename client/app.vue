@@ -9,34 +9,30 @@ p Your opponent has {{game.other.hand}} cards in hand
 p Opponent {{log[0]}}
 div
   .card-container
-    card(v-for='shield in game.other.field.shield', :card='shield')
-  .card-container
+    card.force.stack(v-for='shield in game.other.field.shield', :card='shield')
     card(:card='opLastAttack')
     card(:card='opLastSpeed')
+    card.force.tight.stack(v-for='km in game.other.field.km', :card='km')
   p Km: {{opKms}}
-  .card-container
-    card(v-for='km in game.other.field.km', :card='km')
 div
   .card-container
-    card(v-for='shield in game.me.field.shield', :card='shield')
-  .card-container
+    card.force.stack(v-for='shield in game.me.field.shield', :card='shield')
     card(:card='meLastAttack')
     card(:card='meLastSpeed')
+    card.force.stack.tight(v-for='km in game.me.field.km', :card='km')
   p Km: {{meKms}}
   .card-container
-    card(v-for='km in game.me.field.km', :card='km')
-  .card-container
-    card(v-for='card in game.me.hand', :card='card')
-      button(@click='play(card)', :disabled='!card.playable || over') Play
-      button(@click='discard(card)', :disabled='over') Discard
+    card.stack.playable(v-ref:card, v-for='card in game.me.hand', :card='card', @click='play($index)')
 </template>
 
 <script lang="coffee">
 io = require 'socket.io-client'
 _ = require 'lodash'
+cards = require '../src/cards'
 
 module.exports =
   data: ->
+    cards: cards
     over: false
     log: []
     game:
@@ -71,9 +67,7 @@ module.exports =
     opKms: ->
       _.reduce(@game.other.field.km, (total, card) ->
         total + card.name
-      , 0) or
-      name: 'Km'
-      type: null
+      , 0)
     opLastSpeed: ->
       @game.other.field.speed[@game.other.field.speed.length - 1] or
       name: 'Speed'
@@ -83,17 +77,21 @@ module.exports =
       name: 'Attack / Defense'
       type: null
   methods:
-    discard: (card) ->
-      console.log 'Discarded', card
-      @socket.emit 'discard card', name: card.name, type: card.type
-    play: (card) ->
-      console.log 'Played', card
-      @socket.emit 'play card', name: card.name, type: card.type
+    play: (index) ->
+      if not @over
+        card = @game.me.hand[index]
+        style = window.getComputedStyle @$refs.card[index].$el
+        if 'marginRight' not of style
+          margin = -100
+        margin = parseInt style.marginRight, 10
+        if margin > -20
+          if card.playable
+              @socket.emit 'play card', name: card.name, type: card.type
+          else
+            @socket.emit 'discard card', name: card.name, type: card.type
   ready: ->
     @socket = io()
-    @socket.on 'game view', (game) =>
-      console.log game
-      @game = game
+    @socket.on 'game view', (game) => @game = game
     @socket.on 'discard card', (card) =>
       @log.unshift "discarded #{card.name} #{card.type}"
     @socket.on 'play card', (card) =>
