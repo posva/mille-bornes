@@ -1,5 +1,12 @@
-Mille bornes
-===
+<p align="center">
+  <img src="https://cloud.githubusercontent.com/assets/664177/12067154/11afbbec-aff5-11e5-808d-9dc60ecab497.jpeg"/>
+  <br/>
+  <a href="https://circleci.com/gh/posva/vue-mdl">
+    <img alt="Circle CI" src="https://circleci.com/gh/posva/mille-bornes.svg?style=svg" />
+  </a>
+</p>
+
+----
 
 # Dev
 
