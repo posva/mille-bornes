@@ -43,7 +43,6 @@ io.on 'connection', (socket) ->
       socket.emit 'match over'
     socket.emit 'game view', game.renderModel pIndex
 
-  socket.emit 'game view', game.renderModel pIndex
   socket.on 'discard card', (card) ->
     if game.current is pIndex
       player.discard card
@@ -52,6 +51,14 @@ io.on 'connection', (socket) ->
     if game.current is pIndex and player.canPlay card
       player.play card
       nextTurn()
+
+  socket.on 'new match', ->
+    game.reset()
+    game.start()
+    game.nextTurn()
+    socket.emit 'game view', game.renderModel pIndex
+
+  socket.emit 'game view', game.renderModel pIndex
 
 port = process.env.PORT or 3000
 http.listen port, ->

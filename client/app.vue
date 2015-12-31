@@ -1,4 +1,6 @@
 <style lang="stylus">
+body
+  padding: 0 1rem
 p
   margin-bottom: initial
 .hand-transition
@@ -13,8 +15,10 @@ p
 </style>
 
 <template lang="jade">
-p(v-show='over')
-  strong Game is over!
+div(v-show='over')
+  p
+    strong Game is over!
+  button.button-primary(@click='reset') Play Again
 p Deck has {{game.deck}}. Discard has {{game.discard.length}}
 p Your opponent has {{game.other.hand}} cards in hand
 p Opponent {{log[0]}}
@@ -88,6 +92,9 @@ module.exports =
       name: 'Attack / Defense'
       type: null
   methods:
+    reset: ->
+      @over = false
+      @socket.emit 'new match'
     play: (index) ->
       if not @over
         card = @game.me.hand[index]
