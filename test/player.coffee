@@ -69,7 +69,7 @@ canAttack = (shield, attack) ->
     p1.canPlay attack
     .should.be.true()
 
-describe 'player', ->
+describe 'Player', ->
   p1 = p2 = null
 
   beforeEach ->
@@ -80,29 +80,34 @@ describe 'player', ->
       p1.give name: 'hello'
       p1.hand.should.not.be.empty()
 
-    it 'resets itself', ->
+    it 'does not add empty cards', ->
       p1.hand.should.be.empty()
-      p1.field.shield.should.be.empty()
-      p1.field.km.should.be.empty()
-      p1.field.attack.should.be.empty()
-      p1.field.speed.should.be.empty()
-      should.not.exist p1.discarded
+      p1.give null
+      p1.hand.should.be.empty()
+      p1.give undefined
+      p1.hand.should.be.empty()
+
+    it 'resets itself', ->
+      empty = ->
+        p1.hand.should.be.empty()
+        p1.field.shield.should.be.empty()
+        p1.field.km.should.be.empty()
+        p1.field.attack.should.be.empty()
+        p1.field.speed.should.be.empty()
+        should.not.exist p1.discarded
+
+      empty()
 
       p1.field.shield.push name: 'hello'
       p1.field.km.push name: 'hello'
       p1.field.attack.push name: 'hello'
       p1.field.speed.push name: 'hello'
       p1.give name: 'hello'
-
       p1.discarded = name: 'hello'
 
       p1.reset()
-      p1.hand.should.be.empty()
-      p1.field.shield.should.be.empty()
-      p1.field.km.should.be.empty()
-      p1.field.attack.should.be.empty()
-      p1.field.speed.should.be.empty()
-      should.not.exist p1.discarded
+
+      empty()
 
   describe 'Can I play this card', ->
     beforeEach ->
