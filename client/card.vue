@@ -47,9 +47,13 @@ marginRight()
       &:hover
         &.playable
           cursor: pointer
+          &:after
+            content: 'Play'
         &.muted
           &.playable
             background-color: tomato
+            &:after
+              content: 'Discard'
           img
             filter: grayscale(.75)
         &.playable:not(.muted)
