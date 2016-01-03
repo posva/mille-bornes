@@ -6,9 +6,12 @@ _ = require 'lodash'
 
 describe 'Ed AI', ->
   game = null
+  p1 = p2 = null
   beforeEach ->
     game = new Game()
     game.players = [new Ed(), new Ed()]
+    p1 = game.players[0]
+    p2 = game.players[1]
 
   it 'plays', ->
     game.start()
@@ -27,3 +30,5 @@ describe 'Ed AI', ->
       game.players[game.current].play()
     console.log "Kms: #{game.players[0].kms()} - #{game.players[1].kms()}"
 
+  it 'plays nothing when no cards', ->
+    (-> p1.play()).should.not.throw()

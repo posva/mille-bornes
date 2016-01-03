@@ -46,6 +46,7 @@ class Ed extends Player
       return
 
   play: ->
+    return if not @hand.length
     @affectWeight()
     best =
       card: null
