@@ -20,6 +20,7 @@ class Game
     @deck.empty()
     _.forEach @players, (player) -> player.reset()
     @current = -1
+    @discard.splice 0
     @init()
 
   start: ->

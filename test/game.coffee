@@ -37,6 +37,7 @@ describe 'Game', ->
       spy2.called.should.be.false()
 
       game.deck.array.should.have.length 89
+      game.discard.push cards.km100
 
       game.reset()
       game.deck.array.should.have.length 101
