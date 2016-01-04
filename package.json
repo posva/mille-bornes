@@ -33,6 +33,7 @@
     "html-loader": "^0.4.0",
     "istanbul": "^0.4.1",
     "mocha": "^2.3.4",
+    "purecss": "^0.6.0",
     "should": "^8.0.2",
     "sinon": "^1.17.2",
     "socket.io-client": "^1.3.7",

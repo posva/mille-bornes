@@ -40,7 +40,7 @@
 .menu(v-cloak)
   img.logo.animated.flipInX(src='/img/logo.jpg')
   .entries
-    button.button-primary(v-for='entry in menu' @click='entry.method') {{entry.text}}
+    button.button-primary(v-for='entry in menu', :disabled='entry.disabled', @click='entry.method') {{entry.text}}
 </template>
 
 <script lang="coffee">

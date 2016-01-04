@@ -1,0 +1,36 @@
+sizes-min = {
+  sm: 568px,
+  md: 768px,
+  lg: 1024px,
+  xl: 1280px
+}
+
+sizes-max = {}
+sizes-max.sm = sizes-min.md - 1px
+sizes-max.md = sizes-min.lg - 1px
+sizes-max.lg = sizes-min.xl - 1px
+
+for s, v in sizes-min
+  .visible-{s}
+    display: none !important
+    if s isnt xl
+      @media (max-width: sizes-max[s])
+        display: block !important
+    else if s isnt sm
+      @media (min-width: v)
+        display: block !important
+    else
+      @media (min-width: v) and (max-width: sizes-max[s])
+        display: block !important
+
+  .hidden-{s}
+    if s isnt xl
+      @media (max-width: sizes-max[s])
+        display: none !important
+    else if s isnt sm
+      @media (min-width: v)
+        display: none !important
+    else
+      @media (min-width: v) and (max-width: sizes-max[s])
+        display: none !important
+

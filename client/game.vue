@@ -15,6 +15,11 @@ p
   float: right
   button
     margin: 2px
+.container.game
+  width: 100%
+  height: 100vh
+  div
+    height: 100%
 </style>
 
 <template lang="jade">
